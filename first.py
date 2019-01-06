@@ -1,6 +1,18 @@
 from tkinter import *
 from random import randint
 
+canvas_width = 600
+canvas_height = 600
+numArr = []
+nodeSize = 60
+textSize = 30
+
+master = Tk()
+
+canvas = Canvas(master, width=canvas_width, height=canvas_height, bg="red")
+
+canvas.pack()
+
 
 class Tree:
     def __init__(self):
@@ -8,6 +20,7 @@ class Tree:
 
     def setRoot(self, node):
         self.root = node
+        node.printNode(True)
 
     def getRoot(self):
         return self.root
@@ -48,11 +61,27 @@ class Node:
         if self.right is None:
             print("end of right branch")
         else:
-            print("-->" +)
+            print("-->" + str(self.right.value))
+            self.right.getBranches()
 
+        if self.left is None:
+            print("end of left branch")
+        else:
+            print(str(self.left.value) + "<--")
+            self.left.getBranches()
+
+
+    def printNode(self, isRoot):
+        if isRoot:
+            print("print root node")
+            x1 = canvas_width / 2 - nodeSize / 2
+            y1 = 10
+            x2 = canvas_width / 2 + nodeSize / 2
+            y2 = nodeSize
+            canvas.create_oval(x1, y1, x2, y2) # x1, y1, x2, y2, options
+            canvas.create_text(x1 + nodeSize / 2, (y2 - y1) / 2 + y1 , text=str(self.value))
 
 tree = Tree()
-numArr = []
 
 for x in range(10):
     numArr.append(randint(1, 101))
@@ -64,16 +93,7 @@ for i, val in enumerate(numArr):
     else:
         tree.root.setNode(n)
 
-print(numArr)
+
 
 tree.getTree()
-#canvas_width = 600
-#canvas_height = 600
-
-#master = Tk()
-
-#w = Canvas(master, width=canvas_width, height=canvas_height)
-
-# w.pack()
-
-# mainloop()
+mainloop()
